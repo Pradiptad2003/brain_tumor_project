@@ -1,0 +1,8 @@
+venv/
+brain_dataset/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+model/brain_model.h5
