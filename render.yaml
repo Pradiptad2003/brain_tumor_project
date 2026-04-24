@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: brain-tumor-app
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn brain_project.wsgi"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+        
