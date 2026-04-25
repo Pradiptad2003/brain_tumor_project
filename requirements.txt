@@ -1,7 +1,6 @@
 Django
 gunicorn
-tensorflow==2.15.0
-opencv-python-headless
 numpy
-gdown
+opencv-python-headless
+tflite-runtime
 whitenoise
