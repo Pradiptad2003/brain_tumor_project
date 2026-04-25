@@ -6,10 +6,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9xk3#7r2kq8!b1m0@f4v5^a8c9d2p0l7j6'
 
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+
+# ✅ IMPORTANT (Render needs this)
+ALLOWED_HOSTS = [
+    'brain-tumor-project-eklt.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 # ========================
-# APPLICATIONS
+# APPS
 # ========================
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +33,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # 🔥 ADD THIS (important for static files in production)
+    # ✅ WhiteNoise (must be here)
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -70,13 +76,21 @@ DATABASES = {
 }
 
 # ========================
-# STATIC FILES
+# STATIC FILES (FIXED)
 # ========================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# ✅ IMPORTANT for production static handling
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ========================
 # MEDIA FILES
 # ========================
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
+
+# ========================
+# SECURITY (Render safe)
+# ========================
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
