@@ -8,18 +8,19 @@ from tensorflow.keras.models import load_model
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 model_path = os.path.join(BASE_DIR, "model", "brain_model.h5")
 
+model = None   # ❗ important
+
 IMG_SIZE = 150
 
-# Load model only when needed
-model = None
-
-def get_model():
+def load_my_model():
     global model
     if model is None:
-        if os.path.exists(model_path):
-            model = load_model(model_path, compile=False)
-        else:
+        try:
+            model = load_model(model_path)
+            print("✅ Model loaded successfully")
+        except:
             print("❌ Model file not found!")
+            model = None
     return model
 
 
@@ -48,17 +49,16 @@ def index(request):
 
         img = preprocess_image(file_path)
 
-        model_instance = get_model()
+        model_loaded = load_my_model()
 
-        if model_instance is None:
-            error = "Model not loaded. Try again later."
-            return render(request, "index.html", {"error": error})
-
-        prediction = model_instance.predict(img)[0][0]
-
-        if prediction > 0.5:
-            result = "🧠 Tumor Detected (YES)"
+        if model_loaded is None:
+            result = "❌ Model not loaded. Try again later."
         else:
-            result = "😊 No Tumor (NO)"
+            prediction = model_loaded.predict(img)[0][0]
+
+            if prediction > 0.5:
+                result = "🧠 Tumor Detected (YES)"
+            else:
+                result = "😊 No Tumor (NO)"
 
     return render(request, "index.html", {"result": result, "error": error})
