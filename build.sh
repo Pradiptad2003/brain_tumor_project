@@ -4,14 +4,11 @@ pip install -r requirements.txt
 
 python manage.py collectstatic --noinput
 
-# create model folder
 mkdir -p model
 
-# install gdown (extra safe)
 pip install gdown
 
-# download model (FINAL FIX)
-gdown --id 1oZzSuFrAKoOPE3PHUAwOM7JyUGRxZhw1 -O model/brain_model.h5
+# FORCE download with fuzzy (important)
+gdown --fuzzy "https://drive.google.com/file/d/1oZzSuFrAKoOPE3PHUAwOM7JyUGRxZhw1/view" -O model/brain_model.h5
 
-# check file exists (IMPORTANT DEBUG)
 ls model/
