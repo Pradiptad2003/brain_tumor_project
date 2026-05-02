@@ -3,8 +3,11 @@ import os
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report
 import tensorflow as tf
 from tensorflow.keras import layers, models
+from tensorflow.keras.metrics import Precision, Recall
+from tensorflow.keras.callbacks import EarlyStopping
 
 IMG_SIZE = 150
 
@@ -27,6 +30,9 @@ for category in categories:
         except:
             pass
 
+# Shuffle data (NEW 🔥)
+np.random.shuffle(data)
+
 X, y = [], []
 
 for feature, label in data:
@@ -36,6 +42,7 @@ for feature, label in data:
 X = np.array(X) / 255.0
 y = np.array(y)
 
+# Train-test split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
@@ -54,13 +61,36 @@ model = models.Sequential([
     layers.Dense(1, activation='sigmoid')
 ])
 
-model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
+# Compile (UPDATED 🔥)
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy', Precision(), Recall()]
+)
 
-model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+# Early stopping (NEW 🔥)
+early_stop = EarlyStopping(patience=3)
+
+# Train model
+model.fit(
+    X_train, y_train,
+    epochs=10,
+    validation_data=(X_test, y_test),
+    callbacks=[early_stop]
+)
+
+# 🔥 PREDICTION + EVALUATION
+y_pred = model.predict(X_test)
+y_pred = (y_pred > 0.5).astype(int)
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("\nConfusion Matrix:\n", cm)
+
+# Classification Report
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
 # SAVE MODEL
 model.save("brain_model.h5")
 
-print("Model created!")
+print("✅ Model created & evaluated!")
