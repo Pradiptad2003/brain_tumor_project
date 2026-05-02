@@ -35,6 +35,7 @@ def preprocess_image(path):
 def index(request):
     result = None
     error = None
+    confidence = None   # 🔥 NEW
 
     if interpreter is None:
         return render(request, "index.html", {
@@ -63,12 +64,16 @@ def index(request):
 
         prediction = interpreter.get_tensor(output_details[0]['index'])[0][0]
 
+        # 🔥 CONFIDENCE LOGIC
         if prediction > 0.5:
             result = "🧠 Tumor Detected"
+            confidence = float(prediction) * 100
         else:
             result = "😊 No Tumor"
+            confidence = (1 - float(prediction)) * 100
 
     return render(request, "index.html", {
         "result": result,
+        "confidence": f"{confidence:.2f}%" if confidence else None,
         "error": error
     })
