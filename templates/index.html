@@ -7,18 +7,18 @@
         body {
             margin: 0;
             font-family: Arial;
-
-            background-image: url("static/images/brain-graphic-2 (1).jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             height: 100vh;
+
+            /* 🔥 Modern gradient background (no image needed) */
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
             width: 400px;
-            margin: 120px auto;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             padding: 25px;
             border-radius: 15px;
             text-align: center;
@@ -27,6 +27,10 @@
 
         h1 {
             color: #1e3a8a;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
         }
 
         button {
@@ -40,6 +44,34 @@
 
         button:hover {
             background: #1565c0;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .confidence {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #2e7d32;
+        }
+
+        .bar-container {
+            width: 100%;
+            background: #ddd;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .bar {
+            height: 20px;
+            background: #4caf50;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -63,7 +95,18 @@
     {% endif %}
 
     {% if result %}
-        <h2>{{ result }}</h2>
+        <div class="result">{{ result }}</div>
+    {% endif %}
+
+    {% if confidence %}
+        <div class="confidence">Confidence: {{ confidence }}</div>
+
+        
+        <div class="bar-container">
+            <div class="bar" style="width: {{ confidence }};">
+                {{ confidence }}
+            </div>
+        </div>
     {% endif %}
 
 </div>
