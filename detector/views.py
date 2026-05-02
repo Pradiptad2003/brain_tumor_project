@@ -10,13 +10,13 @@ model_path = os.path.join(BASE_DIR, "model", "brain_model.tflite")
 
 interpreter = None
 
-# SAFE LOAD (no crash)
+# SAFE LOAD 
 if os.path.exists(model_path):
     interpreter = tflite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
-    print("✅ TFLite Model Loaded")
+    print(" TFLite Model Loaded")
 else:
-    print("❌ Model NOT found")
+    print(" Model NOT found")
 
 IMG_SIZE = 150
 

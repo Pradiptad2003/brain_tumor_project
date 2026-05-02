@@ -30,7 +30,7 @@ for category in categories:
         except:
             pass
 
-# Shuffle data (NEW 🔥)
+# Shuffle data 
 np.random.shuffle(data)
 
 X, y = [], []
@@ -61,14 +61,14 @@ model = models.Sequential([
     layers.Dense(1, activation='sigmoid')
 ])
 
-# Compile (UPDATED 🔥)
+# Compile
 model.compile(
     optimizer='adam',
     loss='binary_crossentropy',
     metrics=['accuracy', Precision(), Recall()]
 )
 
-# Early stopping (NEW 🔥)
+# Early stopping 
 early_stop = EarlyStopping(patience=3)
 
 # Train model
@@ -79,7 +79,7 @@ model.fit(
     callbacks=[early_stop]
 )
 
-# 🔥 PREDICTION + EVALUATION
+# PREDICTION + EVALUATION
 y_pred = model.predict(X_test)
 y_pred = (y_pred > 0.5).astype(int)
 
@@ -93,4 +93,4 @@ print("\nClassification Report:\n", classification_report(y_test, y_pred))
 # SAVE MODEL
 model.save("brain_model.h5")
 
-print("✅ Model created & evaluated!")
+print(" Model created & evaluated!")
